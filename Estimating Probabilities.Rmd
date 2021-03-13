@@ -1,0 +1,306 @@
+---
+title: "Probability: Fundamentals in R"
+output: html_notebook
+---
+
+#Introducing Outcomes & Sample Spaces
+
+Chance is a constant presence in our lives that we often take for granted. We look at weather forecasts and assume that what we see is what we'll get, only to be disappointed that a sunny day turned out to be overcast. What we don't appreciate is that these forecasts are more likely educated guesses rather than certainties. The most common place we encounter and interact with chance is the casino, where we hope that Lady Luck may be on our side at the blackjack table. There are some intrepid gamblers that have found a way to tame luck and maximize their potential profits. These few are those who have a solid grasp of dealing with uncertainty.
+
+Mathematicians of the past have figured out a mathematical framework in the study of chance and uncertainty, called probability. Understanding probability is crucial to understanding its more advanced applications, such as spam filters and weather prediction. We'll develop a basic understanding to different interpretations of probability and learn how to incorporate it into your development as a data scientist. To understand probability correctly, we need to start learning its most basic terms. The easiest way to grasp these terms is through example, so we'll use a coin flip as our mental model.
+
+A coin flip is the simplest example of a random experiment. A random experiment is not like a scientific experiment, but it can be thought of as a basic action. It's called "random" because this action can produce different results that we cannot predict before the experiment is "done". For a coin flip, a coin has two sides, which we will refer to as "heads" or "tails". We cannot know if a coin flip will land on the heads side or tails side before it hits the ground, so it qualifies as a random experiment.
+
+We mentioned that a coin flip can only result on heads or tails. The result of a random experiment is called an outcome, so both heads and tails are possible outcomes of the experiment. With random experiments, it is useful to understand all the outcomes than come out of it. For example, we know that a coin can only produce a heads or a tails. There is a special term for the collection of all the outcomes of a random experiment, and it is referred to as the sample space. We use a coin flip as an example because its sample space only has two outcomes.
+
+
+
+```{r}
+library(knitr)
+library(png)
+library(ggplot2)
+```
+
+
+Knowing these terms will make it easier for you to understand and calculate different probabilities. Don't get too caught up in memorizing them now, better understanding will come from more exposure to examples and problems in the mission. If you get stuck on a question, take your time and remember what you have learned. In this course, we'll learn a lot, including:
+
+How to estimate probabilities both theoretically and empirically
+What the fundamental rules of probability are
+How to count, which is more difficult than you'd might expect
+Now move onto the next screen and start your learning!
+
+
+
+
+Say you have a coin. How would you figure out how to calculate what the probability of getting a heads is? Intuitively, you know that there are only two possible outcomes and we will only see one side when we flip it. Assuming that the coin is fair, then there would be an equal chance of getting either heads or tails. The probability, denoted as P(heads), would be a simple calculation: we divide our one desired result -heads- by the total number of outcomes in the sample space.
+
+ P(heads)= 1/2 = 50%
+
+This calculation gives us an insight on how to interpret probabilities. A probability is a numerical measure of how likely an outcome will happen. In order to calculate a probability, you need to know about the outcome you want to see and the size of the sample space. If you flip a fair coin, then you will get heads 50% of the time. To use a deck of cards as another example, we can calculate the probability of drawing any single card. Assuming this is a new deck of 52 cards and all cards are equally likely to be picked, we can calculate this probability:
+
+P(single card) = 1/52 = 1.92%
+
+The probabilities we have calculated so far are called theoretical probabilities. We say they are theoretical because we need to make an important assumption that each outcome in the sample space is equally likely. In practice, this assumption is often too strong, or unrealistic, to make. Consider picking a random fruit at the grocery store. Most people will take some time to examine the fruit to make sure it isn't rotten in anyway. This means that some fruit will be more likely to be picked than others, so the assumption of equal likelihood doesn't hold here.
+
+Nevertheless, the idea that a probability is a numerical measure of chance is still an important idea to grasp. If we know the size of sample space, we can calculate the probability of a single outcome within it.
+
+p(outcome) = 1/number of elements in sample space
+ 
+However, calculating probabilities for single events can only get us so far. In the next screen, we'll expand our probability vocabulary.
+
+# Instructions
+
+Find the theoretical probability of getting a 5 when rolling a six-sided die. Assign your answer to p_5.
+
+Consider a lottery where over 350,000 tickets have been sold. What would be the theoretical probability of winning? Assign your answer to p_lottery.
+
+
+
+```{r}
+
+p_5 <- 1/6
+p_lottery <- 1/350000
+p_5
+p_lottery
+
+```
+
+ So far, we have been careful in our use of the word "outcome". In probability terms, an outcome refers to a singular result in the sample space. From the previous screen, we saw that calculating the probability of an outcome was simple: all we need to know is the size of the sample space. To be able to calculate the probability of multiple outcomes simultaneously, we need to discuss the concept of an event.
+ 
+ 
+ An event can refer to either a singular outcome or a collection of outcomes. Events are more general than outcomes and allow us to calculate more complex probabilities. The following are some simple examples of events, using our toy examples from earlier in the mission:
+ 
+ 
+In a six-sided dice roll, the event that we'll roll an odd number includes the outcomes 1, 3, and 5.
+In a deck of playing cards, the event that we'll draw an Ace is composed of 4 outcomes: the Ace of Spades, Hearts, Clubs and Diamonds.
+
+
+We can define events to include outcomes that are not a part of a particular sample space. For example, if we define our event to be "rolling a 7" when our sample space is the outcomes of a six-sided dice roll. No matter how many times we roll the dice, we'll never satisfy the event, so intuitively the probability of this event is 0.
+
+
+In the last screen, we calculated the probability of an outcome. We can generalize it to be able to calculate the probability of an event:
+
+
+P(event) = number of outcomes that satisfy the event / number outcomes in the sample space
+
+Using this formula, we can calculate the probability of the event "drawing an ace from a deck of cards":
+
+P(drawing an ace) = 4/52 = 1/13 
+
+
+Note that we still interpret the probability of an event similarly to that of an outcome: a numerical measure of the chance of it happening. 
+
+Instructions
+
+A new deck of playing cards contains 52 cards. The deck contains 4 suits, or distinct symbols, and each suit has 13 playing cards. These 13 cards include: the ace, the numbers 2 through 10 and the three face cards: Jack, Queen and King.
+
+Using this knowledge, calculate the probabilities of the event that:
+
+we draw a card with the Hearts suit — assign your answer to p_heart.
+we draw a card that has any of the numbers 2 or 3 — assign your answer to p_2_or_3.
+
+
+```{r}
+p_heart <- 13/52
+p_2_or_3 <- 8/52
+
+
+```
+
+At this point, we can calculate theoretical probabilities of both events and outcomes. But consider a curious question: if we can calculate theoretical probability, how would we be able to confirm if our calculation is correct? That is to say, is there a way that we can estimate a theoretical probability of a given event?
+
+Our solution is the random experiment! A single experiment only results in a single outcome, but we can repeat the experiment multiple times. To estimate the probability of an event, we can repeat an experiment a certain number of times and count how many times we observe the event of interest. To summarize this in an equation, we get:
+
+
+
+est.P(event) = number of times event is observed / number of times experiment was repeated
+
+
+As a simple example, let's say we're interested in estimating the probability of a coin landing on heads. To estimate the probability, we can take the following steps:
+
+Toss the coin many times, thus repeating the random experiment
+Count the number of times the coin landed on heads.
+Divide the number of heads by the total number of times we tossed the coin.
+
+
+
+Let's say we got heads 56 times. Then, the probability of a coin landing heads up in this particular instance would be 
+56/100 = 0.56
+
+Our estimated probability of a coin landing heads up is 56%. We call this probability an empirical probability. Empirical refers to the idea that we concretely observe this probability, as opposed to merely calculating it theoretically. We can interpret an empirical probability as a relative frequency, which is similar to our understanding of the theoretical probability
+
+
+
+It's important to note that the number 56 was arbitrary. We could have easily gotten 40 heads, 47 heads or even 60 heads. Each experiment can yield a different empirical probability, but only one outcome -50 heads- corresponds with our theoretical probability of 50%. If we can get many different empirical probabilities, how do we reconcile this with our theoretical probability?.
+
+
+Instructions
+
+Say we rolled a six-sided dice 100 times and got the number three 18 times. Calculate the probability of getting that number using the formula above and assign the result to p_three.
+
+
+```{r}
+p_three <- 18/100
+
+```
+
+# Repeating Experiments
+
+We learned in the last screen that empirical probabilities may not match up with our calculated theoretical probabilities, as in our coin flipping example. If we're looking at the same phenomenon, we should expect that the empirical and theoretical probabilities should match up.
+
+We made up some values in the interest of calculating empirical probability, but programming gives us a valuable tool to test our probability terms. Instead of having to actually flip an actual coin multiple times, we can simulate multiple coin flips using R. Writing simulations is an essential tool to a data scientist's toolkit.
+
+We'll start by writing a function named coin_toss() to simulate a single coin toss:
+
+
+```{r}
+set.seed(1)
+
+coin_toss <- function() {
+
+    toss <- runif(1)
+    if (toss <= 0.5) {
+        return("HEADS")
+    } else {
+        return("TAILS")
+    }
+}
+
+
+```
+
+To break down the code above:
+
+We used the set.seed() function to set a random seed for our analysis. Setting the same seed in your analyses is important because it enables functions to return the same result, despite incorporating randomness.
+
+We use the runif() function to emulate a coin flip and create a random number between 0 and 1. We've assumed that our theoretical probability is 50%, so if the random number is less than 0.5, the function will return "HEADS". Otherwise, it will return "TAILS."
+
+
+For this exercise, we've already defined the coin_toss() function and a heads variable. Using this function:
+Write a for-loop to repeat the coin toss 10 times
+If the coin returns HEADS, you should increment
+Use this loop of "coin flips" to calculate the empirical probability of getting a heads. Assign it to experiment_one.
+Using a separate variable called experiment_two, perform another set of 100 coin tosses and calculate another empirical probability of getting heads and assign it to this variable.
+The only variable that changes here is the number of coin tosses. Use this to your advantage and leverage the code you write for problem 2.
+
+
+
+
+
+```{r}
+set.seed(1)
+
+coin_toss <- function() {
+    toss <- runif(1)
+    if (toss <= 0.5) {
+        return("HEADS")
+    } else {
+        return("TAILS")
+    }
+}
+heads <- 0
+
+n_experiment <- 10
+coin_flips <- for (n in 1:n_experiment) {
+  outcome = coin_toss()
+if(outcome == "HEADS"){
+  heads <- heads + 1
+}
+}
+  experiment_one <- heads/n_experiment
+  experiment_one
+
+heads_2 <- 0
+n_experiment <- 100
+coin_flips <- for (n in 1:n_experiment) {
+  outcome = coin_toss()
+if(outcome == "HEADS"){
+  heads_2 <- heads_2 + 1
+}
+}
+
+experiment_two <- heads_2/n_experiment
+experiment_two
+
+```
+
+
+You may have noticed that the probability of experiment_two is much closer to the theoretical probability than experiment_one. The more experiments you use, the empirical probability of getting a heads starts to approach the theoretical probability. This result comes from one of the most important laws in probability: the Law of Large Numbers. The Law of Large Numbers is what links our empirical probabilities to our theoretical probabilities. We won't go into its technical details, but just know that this law is what makes simulations and programming so powerful.
+
+The examples we've seen in this mission have dealt with counting events, but the concepts they exemplify apply to many probability problems. Often times, there will be cases where we can't calculate the theoretical probability to check against an empirical probability. In these cases, we may take some solace that performing a properly set up simulation many, many times will create a good estimate of the theoretical probability.
+
+In this mission, we've discussed what a probability is and different ways to calculate a probability. Both are important to answering more complex questions. We used programming to get our feet wet with a simple simulation to see how these different concepts are interrelated. Before we move on, we'll look at a more concrete probability problem.
+
+Instructions
+
+The Law of Large Numbers can take effect really quickly. This means that you won't need to repeat your experiment an extreme amount of times before you start approximating the theoretical probability well. We can also demonstrate this using simulation. We've provided the same coin_toss() function here, and we'd like you to do the following:
+
+Write a for-loop to calculate the empirical probability of getting a heads using 10 coin flips. Subtract this probability from the theoretical probability. Assign this difference to experiment_diff_one.
+Repeat the task above using 100 coin flips. Subtract this probability from the theoretical probability. Assign this difference to experiment_diff_two.
+Finally, repeat the task above using 1000 coin flips. Subtract this probability from the theoretical probability. Assign this difference to experiment_diff_three.
+Do you notice any trends between the differences and the number of coin flips used?
+
+
+```{r}
+set.seed(1)
+
+coin_toss <- function() {
+    toss <- runif(1)
+    if (toss <= 0.5) {
+        return("HEADS")
+    } else {
+        return("TAILS")
+    }
+}
+heads <- 0
+n_experiment <- 10
+for (i in 1:n_experiment) {
+  if(coin_toss() == "HEADS"){
+    heads <- heads + 1
+  }
+}
+experiment_one <- heads/n_experiment
+experiment_th_one <- (1/2)
+experiment_th_one
+
+experiment_diff_one <-   experiment_th_one - experiment_one
+experiment_diff_one
+
+
+heads_1 <- 0
+n_experiment_1 <- 100
+for (i in 1:n_experiment_1) {
+  if(coin_toss() == "HEADS"){
+    heads_1 <- heads_1 + 1
+  } }
+
+experiment_two <- heads_1/n_experiment_1
+experiment_th_two <- (1/2)
+experiment_th_two
+
+experiment_diff_two <-   experiment_th_two - experiment_two
+experiment_diff_two
+
+
+heads_2 <- 0
+n_experiment_2 <- 1000
+for (i in 1:n_experiment_2) {
+  if(coin_toss() == "HEADS"){
+    heads_2 <- heads_2 + 1
+  } }
+
+experiment_three <- heads_2/n_experiment_2
+experiment_th_three <- (1/2)
+experiment_th_three
+
+experiment_diff_three <-   experiment_th_three - experiment_three
+experiment_diff_three
+
+
+
+
+```
+
+
+
+

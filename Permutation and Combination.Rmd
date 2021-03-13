@@ -1,0 +1,326 @@
+---
+title: "permutation and Combination"
+output: html_notebook
+---
+We begin with considering a composite experiment A1A2A1A2 composed of two individual experiments, denoted as "A1A1" and "A2A2":
+•	A1A1: flipping a fair coin
+•	A2A2: throwing a six-sided dice
+A1A2A1A2 means we flip a coin and throw a dice and consider the outcomes of the two individual experiments together as a pair. For example, one of the possible outcomes of this composite experiment A1A2A1A2 is (H,1), indicating that the coin landed heads up and the dice showed a 1. There are 12 possible outcomes associated with A1A2A1A2:
+Ω={(H, 1), (H, 2), (H, 3), (H, 4), (H, 5), (H, 6), (T, 1), (T, 2), (T, 3), (T, 4), (T, 5), (T, 6)}Ω={(H, 1), (H, 2), (H, 3), (H, 4), (H, 5), (H, 6), (T, 1), (T, 2), (T, 3), (T, 4), (T, 5), (T, 6)}
+We can also illustrate the outcomes using a tree diagram:
+ 
+When we flip the coin, there are two possible outcomes: heads or tails. Each of the two outcomes can be followed by six other outcomes, depending on how the six-sided dice lands. If there are two outcomes, and each of these two have six other corresponding outcomes, we can use multiplication to find the total number of outcomes:
+Total number of outcomes=2×6=12Total number of outcomes=2×6=12
+This small example gives us some insight into how we can calculate the sample space sizes of composite random experiments. Generally, if we have an experiment E1E1 (like flipping a coin) with a outcomes, followed by an experiment E2E2 (like rolling a dice) with b outcomes, then the total number of outcomes for the composite experiment E1E2E1E2 can be calculated by multiplying a with b:
+
+Total number of outcomes=a×bTotal number of outcomes=a×b
+The formula above is known as the rule of product (or the multiplication principle). Note that this is different than the multiplication rule we learned in the previous mission. The rule of product will help us figure out the size of sample spaces, while the multiplication rule helps us calculate probabilities of composite random events.
+
+
+
+Instructions
+Consider the composite experiment E1E2E1E2, where E1E1 is rolling a fair six-sided dice once, and E2E2 is rolling the same dice again. One of the outcomes of E1E2E1E2 could be (1, 6), which means we get a 1 for the first roll and a 6 for the second one.
+1.	Use the rule of product to calculate the total number of outcomes. Assign your answer to n_outcomes.
+2.	Use n_outcomes to calculate the probability of getting a (6,6). Assign your answer to p_six_six. Check the hint if you find difficulties calculating this.
+3.	Use n_outcomes to calculate the probability of not getting a (5,5) and assign your answer to p_not_five_five.
+
+```{r}
+
+n_outcomes <- 6*6
+p_six_six <- 1/36
+p_not_five_five <- 1 - 1/36
+
+```
+
+
+#Extending Rule of Product
+
+On the previous screen, we used the rule of product for a composite experiment consisting of just two experiments.
+Number of outcomes=a×bNumber of outcomes=a×b
+One great aspect of the rule of product is that we can easily extend it to composite experiments with any number of component experiments. For instance, consider the composite experiment E1E2E3E1E2E3, where:
+•	E1E1 is flipping a coin
+•	E2E2 is rolling a six-sided dice
+•	E3E3 is flipping another coin
+Using a tree diagram, we can visualize the sample space and see we have 24 outcomes.
+ 
+We can extend the rule of product and get the product of each experiments sample space to get back to the 24 outcomes we saw in the tree diagram.
+Total number of outcomes=2×6×2Total number of outcomes=2×6×2
+More generally, if we have an experiment E1E1 with a outcomes, followed by an experiment E2E2 with b outcomes, followed by more experiments up until experiment EnEn with n outcomes, the total number of outcomes for the composite experiment E1E2...EnE1E2...En can be found by multiplying their individual outcomes:
+Total number of outcomes=a×b×…×nTotal number of outcomes=a×b×…×n
+Let's now use this extended rule of product to calculate more outcomes and probabilities.
+
+Instructions
+
+We roll a fair six-sided dice three times, and then randomly draw a card from a standard 52-card deck. One of the outcomes could be (6, 6, 6, ace of diamonds), which means getting three 6's in a row when we roll the dice, followed by drawing an ace of diamonds from the deck.
+
+Use the extended rule of product to calculate the total number of outcomes. Assign your answer to total_outcomes.
+Use total_outcomes to calculate the probability of getting (6, 6, 6, ace of diamonds) — three sixes in a row followed by an ace of diamonds. Assign your answer to p_666_ace_diamonds.
+Use p_666_ace_diamonds to calculate the probability of getting anything but (6, 6, 6, ace of diamonds). Assign your answer to p_no_666_ace_diamonds.
+
+
+
+```{r}
+total_outcomes <- 6 * 6 * 52 * 6
+p_666_ace_diamonds <- (1/(6*6*6)) * (1/52)
+p_no_666_ace_diamonds <- 1- p_666_ace_diamonds
+
+```
+
+
+We'll use a security example to show where the rule of product has an application. Let's say that a potential thief is going to attempt to login into my Dataquest account by blindly entering random strings of letters. To simplify the example, let's say that a Dataquest password must be exactly 9 characters long, with 8 lowercase letters followed by a single digit. When we say that the thief is entering random strings, this means that any of the letters are equally likely to be picked as the next letter (aka simple random sampling).
+The thief also knows the password constraints, so they start manually typing out random strings that fit the constraints. The thief hopes that they will get lucky, but thankfully the rule of product will give us some degree of protection. To understand this, it's best to rethink typing a password as a composite random experiment.
+A password is just a particular arrangement of letters and a number, so randomly typing out passwords is the same as picking random letters/numbers. Each choice of a letter is an individual random experiment, so the password overall is a composite random experiment. To get access to my account, the thief needs to choose the one correct string out of many. To see just how unlikely this is, we need calculate the number of all possible Dataquest passwords. There are 26 letters in the Roman alphabet and 10 numerals, so by the rule of product:
+Total number of Dataquest passwords=268×10=2,088,270,645,760Total number of Dataquest passwords=268×10=2,088,270,645,760
+Since 8 letters are required, we need to multiply 26 by itself 8 times, followed by 10 to account for the number at the end. The sheer number of possible strings that fit the (simplified!) Dataquest criteria surpasses 2 trillion. My Dataquest password is just one of these. The probability that thief will correctly guess my password through brute force is:
+P(correct guess)=12,088,270,645,760≈4.78−13P(correct guess)=12,088,270,645,760≈4.78−13
+This probability is astronomically small, and we've even simplified the constraints for the password! The rule of product is why we should make our passwords as long as possible: it makes it much, much harder to guess the password and prevent thieves from using your Dataquest account
+
+
+
+Instructions
+
+Say that Dataquest passwords were simplified even further to have only numbers (like a PIN code). Consider the two situations below:
+
+Find the probability of cracking a 4-digit PIN code using the code 8362. Assign your answer to p_crack_4.
+Find the probability of cracking a 6-digit PIN code using the code 348821. Assign your answer to p_crack_6.
+
+```{r}
+p_crack_4 <- 1/10**4
+p_crack_6 <- 1/10**6
+```
+
+#With Replacement vs Without Replacement
+
+Using the rule or product, we know that there are 10,000 possible arrangements of 4 digits. For any of the numbers in the 4-digit PIN code, any of the numbers between 0 and 9 were possible candidates to be chosen, regardless if we were picking a number for the first digit or the last digit.
+
+There is a particular term used for this type of sampling. When we choose a digit, we are picking one from the set {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}. After we've chosen a number for the first digit, we do the same for the second and so on. If we "pick" a number for the first digit and then "put it back" so that it is available for the second pick, we call this sampling with replacement. Conversely, if we don't put the first "picked" digit back and it's not available for the second pick, we call it sampling without replacement. Using the 4-digit example, if the number "8" were picked for the first digit of the PIN code, it cannot be used again for any of the subsequent digits.
+
+When calculating the sample space size of composite random experiment, it is important to know if we are sampling with or without replacement. In sampling without replacement, we effectively reduce the number of outcomes in subsequent random experiments. This has implications on the rule of product calculation. Composite random experiments that have sampling with replacement have larger sample space than those with sampling without replacement.
+
+
+When we were calculating the number of simplified Dataquest passwords, we were also sampling with replacement. If we were to repeat the calculation but without replacement, the calculation would look be:
+
+26×25×24×…×10=629,909,280,00026×25×24×…×10=629,909,280,000
+After the first letter is chosen, it is no longer available for the second letter, which is why you see the 25. For comparison, the amount of password arrangements with replacement was over 2 trillion, while the amount without replacement is a paltry 628 billion. To put this scale in perspective, there are about 3 passwords with replacement for every password without.
+For our exercise, we'll take on a more realistic example of where sampling without replacement might take place.
+
+Instructions
+
+You are a manager picking some data scientists for some team projects. You have a pool of 10 candidates to choose from. Please calculate:
+
+The number of teams possible if you needed to fill a 4-person team. Assign your answer to size_num_4.
+The number of teams possible if you needed to fill a 6-person team. Assign your answer to size_num_6
+
+```{r}
+size_num_4 <- 10*9*8*7
+size_num_6 <- 10*9*8*7*6*5
+
+```
+
+
+#Permutation
+
+On the last screen, we saw that we could extend the rule of product to incorporate more than two random experiments. For the exercise, we also saw we have 10,000 possible 4-digit PIN codes:
+Number of outcomes=10×10×10×10=10,000Number of outcomes=10×10×10×10=10,000
+There's a particular quality to passwords and PIN codes that deserve some discussion. Both passwords and PIN codes represent arrangements of letters and numbers where the order of the individual digits matters. Order matters in a sense that the string of numbers "1289" is distinct from "9821". The two strings are made of the same numbers, but they are distinct because the order of their numbers is different.
+
+There is a term for arrangements of items where their order matters. They are called permutations. To use the 4-digit PIN codes as an example, we would say that there are 10,000 possible permutations for a 4-digit PIN code, or arrangements where the order of the digits matters. We'll also cover arrangements where order doesn't matter, but this will come later in the mission.
+
+Let's now turn our attention to another simple example. We're interested in calculating the total number of possible permutations for the set of numbers {5, 6, 7}. One possible permutation would be 567, another would be 657, and so on.
+However, this time we want to form the permutations by sampling without replacement. For instance, if we sample once without replacement from the set {5, 6, 7} and get a 5, we don't put the 5 back in the set, and only {6, 7} remains for the second round of sampling.
+To form a permutation like 567 or 657, we need to sample three times from the set {5, 6, 7}. Since we sample three times, we can break down the entire process into three experiments:
+•	E1E1: which has three possible outcomes: {5, 6, 7}
+•	E2E2: which has two possible outcomes because we sample without replacement from E1E1
+•	E3E3, which has the single outcome left
+Using the rule of product, we see we have a total of six outcomes for the composite experiment E1E1 E_2 E_3:
+Total number of outcomes=3×2×1=6Total number of outcomes=3×2×1=6
+This makes sense, since these are all the possible permutations (arrangements) of {5, 6, 7} when we sample without replacement: 567, 576, 657, 675, 756, 765.
+ 
+From this basic example, we can extract a more useful general formula for sampling without replacement. Consider an experiment with n outcomes, and we want to sample from these outcomes without replacement until only one remains. In other words, if there are n outcomes for the first experiment, (n-1) outcomes for the second, (n-2) for the third, until we only have one outcome for the last experiment, then we can find the number of permutations without replacement using the formula:
+n×(n−1)×…×2×1n×(n−1)×…×2×1
+In mathematics, the expression n×(n−1)×(n−2)×…×2×1n×(n−1)×(n−2)×…×2×1 is so common that it has been given its own name and notation. This product is abbreviated as n!n! and it is called a factorial. We would read n!n! as "n factorial". For instance, if n=5n=5, then n!=5!=5×4×3×2×1=120n!=5!=5×4×3×2×1=120.
+For our case above with finding the total number of permutations for {5, 6, 7}, n=3n=3. To find the total number of permutations we use:
+n!=3!=3×2×1=6.n!=3!=3×2×1=6.
+To summarize, when we sample with replacement, the number of permutations is given by the formula:
+Number of permutations=n!Number of permutations=n!
+We're now going to do an exercise and resume the discussion about permutations on the next screen.
+
+
+Instructions
+1.	Write a function named factorial() which takes as input a number n and computes the factorial of that number n. There's more than one way to code this function, so we'll leave this exercise open — check the hint section if you get stuck.
+o	If you need a refresher on how to create a function in R, you can refer back to our Intermediate R Programming Course
+2.	Use the factorial() function to find the total number of permutations (arrangements where order matters) for the letters "a", "b", "j", "k", "x", "y" (the letters cannot be repeated — this is equivalent to sampling without replacement from the set {"a", "b", "j", "k", "x", "y"}. Assign your answer to letter_permutations.
+
+
+```{r}
+final_product <- 1
+factorial <- function(n){
+if(n < 0){print("factorial does not exist for negative numbers")}
+  else if(n == 0){print("the factorial of 0 is 1")}
+  else{
+    for(i in 1:n){
+      final_product = final_product*i
+     }
+  }
+   print(final_product)
+  }
+```
+```{r}
+factorial(6)
+```
+# More about permutation
+
+In the last exercise, we calculated the number of permutations for the 52 cards of a standard 52-card deck. In practice though, we're often more interested in smaller card hands rather than the full 52 card stack. A hand is a small subset of the cards that you have to play with during a card game.
+For example, in a variation of poker called Texas hold'em, players are interested in 5-card hands. To find the total number of possible permutations for a 5-card poker hand, we start by considering this hand as a composite random experiment where we sample five times without replacement from a standard 52-card deck:
+•	E1E1 — we have 52 cards in the deck, so 52 outcomes are possible
+•	E2E2 — we have 51 cards left in the deck, so 51 outcomes are possible (because we sample with replacement, we don't put back in the deck the card we got at E1E1)
+•	E3E3 — we have 50 cards left in the deck, so 50 outcomes are possible
+•	E4E4 — we have 49 cards left in the deck, so 49 outcomes are possible
+•	E5E5 — we have 48 cards left in the deck, so 48 outcomes are possible
+We can use the extended rule of product to calculate the number of permutations for a 5-card poker hand:
+Number of possible 5-card hands=52×51×50×49×48=311,875,200Number of possible 5-card hands=52×51×50×49×48=311,875,200
+The factorial notation —n!n!— that we learned in the previous screen can't be used directly here because we only want to consider a 5-card hand. More generally, we need to figure out a new formula to use if we only want to choose smaller subsets from a greater collection of n objects.
+When we have a group of n objects, but we're taking only k objects from this group, the number of permutations (which we abbreviate as PP) is:
+P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)
+This formula is called the permutation formula. The dots imply that we continue multiplying until we reach n−k+1n−k+1. The n−k+1n−k+1 term comes from an offset since we start our multiplication with nn. Using the 5-card poker hand example, we can see how this plays out in the diagram below since n=52n=52 and k=5k=5:
+ 
+Instead of writing the dots, we want the permutation formula in a form that can be written more concisely. If nn is large and kk is small, then we could potentially be writing a lot of terms for a relatively simple multiplication. This shorter form should incorporate only two pieces of information: the number of total objects nn and the desired size of the subgroup kk. We know that the permutation formula can be written as a long list of numbers:
+P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)
+This formula is like a shortened factorial, so maybe we can make use of the notation. We know that
+n!=n×(n−1)×(n−2)×…×1n!=n×(n−1)×(n−2)×…×1
+so our all we would need to do is find a way to cancel out the terms after n−k+1n−k+1 that we don't need. We can cancel these terms out by using division! We just need to figure out some number using nn and kk to cancel out exactly the terms we want to remove. To use a simpler example, let's say that n=5n=5 and k=3k=3. Our problem then becomes:
+ 
+In order to cancel out the last two terms in the numerator, we need 2!2!. The last piece we need to figure out is how this value relates to nn and kk. Since n=5n=5 and k=3k=3, then the way we can get back to 2!2! is by taking the factorial of the difference, (n−k)!(n−k)!. We've finally found a better form of the permutation formula:
+P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)=n!(n−k)!P(n,k)=n×(n−1)×(n−2)×…×(n−k+1)=n!(n−k)!
+Applying this back to the 5-card poker hand, we can confirm that the formula still works correctly:
+P(52,5)=52!(52−5)!=52!47!=52×…×48P(52,5)=52!(52−5)!=52!47!=52×…×48
+We've worked through the permutation formula a lot on this screen, it's time to get some practice using it.
+
+Instructions
+Using the formula we just learned:
+1.	Create a function called permutation that takes in 2 arguments, nn and kk, and outputs the total number of permutations from these two inputs.
+o	We've provided the factorial function here, which might be of use here.
+2.	Use your function to calculate the number of permutations for 3-card hand when we're drawing without replacement from a 52-card standard deck. Assign your answer to perm_3_52.
+3.	Use your function to calculate the number of permutations for a 4-card hand when we're drawing without replacement from a 20-card deck. Assign your answer to perm_4_20.
+
+
+
+```{r}
+
+factorial <- function(n) {
+    final_product <- 1 
+    for (i in 1:n) {
+        final_product <- final_product * i
+    }
+    return(final_product)
+}
+
+permutation <- function(n,k){
+  return(factorial(n)/factorial(n-k))
+   
+}
+
+perm_3_52 <- permutation(52,3)
+perm_4_20 <- permutation(20,4)
+
+perm_4_20
+perm_3_52
+```
+
+#Some Order doesn't matter
+
+Previously, we mentioned players in Texas hold 'em are interested in having a winning 5-card poker hand. To find the number of permutations for a 5-card poker hand, we learned to use the permutation formula:
+P(52,5)=52!(52−5)!=311,875,200P(52,5)=52!(52−5)!=311,875,200
+However, we have to remember that a permutation is an arrangement of elements where order matters. While the number that we calculated above is correct, consider a particular detail we may have missed. Below are three 5-card hands, and each has the same cards. Although they are each considered different permutations since order matters, this detail doesn't really matter from the player's perspective.
+ 
+In a poker game, the order of cards in a player's hand is not important. It matters more what cards we have. Effectively, the three hands above would be considered identical. We might be interested instead in finding the number of unique card arrangements with while ignoring the order of the cards. There is another special name for this type of arrangement: the combination. Both permutations and combinations are arrangements of items, but order matters in permutations and doesn't in combinations.
+To find the number of unique combinations, we begin with the observation that given nn items and needing to pick kk items from them without replacement, there will always be more permutations than combinations. Intuitively, if order matters, then the same kk items themselves can be rearranged k!k! different ways. If order doesn't matter, then we only have one combination of the kk items. Using the card example from above, each of the hands showed are different orderings (permutations) of the same combination of cards. This leads us to an important observation: for every combination of kk items, there are k!k! permutations of these items.
+This insight gives us a relationship between the number of combinations of objects and the number of permutations of these objects. In the last screen, we worked out the exact formula for the number of permutations of nn objects choosing kk of them.
+P(n,k)=n!(n−k)!P(n,k)=n!(n−k)!
+Our goal of interest is to figure out how many unique combinations there are of nn items, choosing kk of them. For now, we'll designate this number as an unknown constant cc. We now know that for every combination of kk items, there are k!k! permutations of these items, making for a total of c×k!c×k! possible permutations. We can set these two quantities equal to each other since they represent the same thing!
+c×k!=n!(n−k)!⟹c=n!(n−k)!k!c×k!=n!(n−k)!⟹c=n!(n−k)!k!
+Rearranging the terms so we don't have fractions in fractions, the formula for combinations becomes:
+c=n!k!(n−k)!c=n!k!(n−k)!
+This is great! We have a concise formula for figuring out the number of combinations of nn items, choosing kk of them. This quantity would be more of interest to an aspiring poker player, rather than the number of permutations.
+c=52!5!(52−5)!=2,598,960c=52!5!(52−5)!=2,598,960
+We can confirm that the number of unique 5-card combinations (2,598,960) is much lower than the number of permutations of all 5-card hands (311,875,200). This is still an high number for a poker player to manipulate, but it's still a relevant figure to know. Let's now do an exercise and use what we found to calculate some probabilities. We'll discuss more about the notation we use with combinations in the next screen.
+Instructions
+1.	Use the factorial() and permutation() functions to calculate the number of unique 5-card arrangements when drawing without replacement from a standard 52-card deck. Assign your answer to a variable named c.
+2.	Calculate the probability of getting a 5-card hand with four aces and a seven of diamonds (assume we're drawing randomly and without replacement from the deck). Assign your answer to p_aces_7.
+3.	For a state lottery, six numbers are drawn randomly and without replacement from an urn containing numbers from 1 to 49. Using the factorial() and the permutation() functions, find the total number of unique 6-number arrangements that could result. Assign your answer to c_lottery.
+4.	Calculate the probability of winning the big prize for this state lottery provided you use the numbers (3, 20, 37, 44, 45, 49) — the big prize means the numbers match exactly those resulted from the official drawing.
+o	Assign your answer to p_big_prize.
+Get Help
+Get a hint
+See the answer
+Community discussion
+Hint
+•	A 5-card hand of four aces and a seven of diamonds represents one possible outcome and there are c total possible outcomes. You'll need to calculate the theoretical probability.
+•	For the state lottery example, the 52P5_{52}P_552P5 we used in the lesson becomes 49P6_{49}P_649P6. Also, 5!5!5! becomes 6!6!6! because there are 6!6!6! permutations for each unique six-number arrangement.
+
+
+
+
+```{r}
+factorial <- function(n) {
+    final_product <- 1 
+    for (i in 1:n) {
+        final_product <- final_product * i
+    }
+    return(final_product)
+}
+
+permutation <- function(n, k) {
+    return(factorial(n) / factorial(n - k))
+}
+
+combination <- function(n,k){
+return(permutation(n,k)/factorial(k))
+}
+c <-combination(52,5)
+p_aces_7 <- 1/c
+c_lottery <- combination(49,6)
+p_big_prize <- 1/c_lottery
+
+```
+
+#Combination Notation
+
+On the previous screen, we made the observation that the order in which the cards are arranged in a 5-card hand doesn't really matter to poker players. This observation motivated us to calculate the number of unique combinations of 5-card hands that are possible from a 52-card deck, rather than the number of permutations. We saw earlier in the mission that permutations have particular notation associated with them, so it's important to know what notation to expect from combinations.
+ 
+On the previous screen, we used this technique to calculate the number of combinations of a 5-card hand. In this case, n=52n=52 and k=5k=5. Filling out the equation we learned earlier:
+52!5!(52−5)!=2,598,96052!5!(52−5)!=2,598,960
+The notation for combinations is simlar to that of permutations. Just as the permutation formula can be written as:
+P(n,k)=n!(n−k)!P(n,k)=n!(n−k)!
+Combinations can be written as:
+C(n,k)=nCk=n!k!(n−k)!=(nk)C(n,k)=nCk=n!k!(n−k)!=(nk)
+All three notations are equivalent and are read as "n choose k". Using another example, if we wanted to calculate the number of unique ways we can borrow 10 books from a small library of 35 different books, we can calculate this as(3510)(3510) ("35 choose 10"):
+(3510)=35!10!(35−10)!=183,579,396(3510)=35!10!(35−10)!=183,579,396
+Let's now write a function for our formula above, solve a few probability problems, and wrap up this mission on the next screen.
+Instructions
+1.	Write a function named combination() which takes in two inputs (n and k) and outputs the number of combinations when we're taking only kk objects from a group of nn objects. To simplify your work, use the factorial() function we wrote on a previous screen.
+2.	A small company is interested in running an A/B test and is about to select a group of 18 customers out of a total of 34 customers. Find the number of unique ways in which 18 customers can be selected from a group of 34 and assign your result to c_18.
+3.	One of the possible outcomes is group Y, which is a group formed by 18 customers. Assume all the outcomes have equal chances of occurring and calculate the probability of getting a group other that group Y. Assign your answer to p_non_Y.
+
+
+Hint
+•	Remember to make sure to take advantage of the factorial function to simplify combination.
+•	To find the probability of getting a group other than group Y, you'll need to use the relationship between the probability of an event and the probability of its complement
+
+
+```{r}
+factorial <- function(n) {
+    final_product <- 1 
+    for (i in 1:n) {
+        final_product <- final_product * i
+    }
+    return(final_product)
+}
+
+combination <- function(n,k){
+return(permutation(n,k)/factorial(k))
+    }
+c_18 <- combination(34,18)
+p_non_Y <- 1 - 1/c_18
+```
+

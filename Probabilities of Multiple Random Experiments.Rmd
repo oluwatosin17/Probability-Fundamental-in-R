@@ -1,0 +1,225 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+We'll use the example of two coin flips as a single random experiment. Representing heads as "H" and tails as "T", the sample space of this experiment is composed of {HH,HT,TH,TT}{HH,HT,TH,TT} where the first letter represents the outcome of the first toss and so on. Now that we have the sample space, we can start calculating probabilities of events in this sample space.
+
+
+
+What if we wanted to look at 100 coin flips? Absolutely no one wants to write out strings of a hundred H's and T's just to figure out the sample space and its associated probabilities. Remember that to calculate event probabilities, we need to know two things: 1) the size of the sample space and 2) all the outcomes that satisfy the event. When there are many, many outcomes, we can no longer simply count outcomes in our head, so there is a fundamental limitation in considering multiple flips as a single random experiment.
+
+
+
+A good alternative is to think of it as many single coin flips. Instead of having to deal with a large random experiment, we'll figure out a way to combine the results of many small random experiments. We'll explore this idea as we progress through the mission. For now, let's perform a quick warm-up before progressing to the next screen. For the exercises below, you'll need to use the addition rule. Remember that the addition rule enables us to calculate the probabilities for the union of two events.
+
+
+Instructions
+
+An advertisement company runs a quick test and shows two ads on the same web page (ad "A" and ad "B") to 100 users. At the end of the trial, they found:
+
+12 users clicked on ad "A"
+17 users clicked on ad "B"
+3 users clicked on both ads
+Find:
+
+The probability that a user clicks on ad "A." Assign your result to p_a.
+The probability that a user clicks on ad "B." Assign your result to p_b.
+The probability that a user clicks on both ad "A" and ad "B." Assign your result to p_a_and_b.
+The probability that a user clicks on either ad "A" or ad "B." Assign your result to p_a_or_b. For this exercise, keep in mind a user can click on both ads, so the events are not mutually exclusive — use the addition 
+
+```{r}
+p_a <- 12/100
+p_b <- 17/100
+p_a_and_b <- 3/100
+p_a_or_b <- p_a + p_b - p_a_and_b
+
+
+```
+
+
+#Multiplication Rule
+
+What good comes from between viewing 100 coin flips as 100 small random experiments compared to a single large experiment? This change in perspective gives us a better way to visualize how the final outcome will play out. Instead of viewing the sample space as just a "pool" of outcomes, we can view it as a tree.
+
+
+Each flip becomes a split in the tree, and the final outcome of the experiment is one of the paths through this tree. We can get the number of outcomes in the sample space by counting the number of paths in the tree! The random experiment is essentially the same, but a shift in perspective can offer some helpful new ways of thinking. We can use this new tree of outcomes to calculate the probability of getting two heads.
+
+What good comes from between viewing 100 coin flips as 100 small random experiments compared to a single large experiment? This change in perspective gives us a better way to visualize how the final outcome will play out. Instead of viewing the sample space as just a "pool" of outcomes, we can view it as a tree. The diagram below takes the two-coin flip random experiment and reimagines it as a path of outcomes.
+ 
+Each flip becomes a split in the tree, and the final outcome of the experiment is one of the paths through this tree. We can get the number of outcomes in the sample space by counting the number of paths in the tree! The random experiment is essentially the same, but a shift in perspective can offer some helpful new ways of thinking. We can use this new tree of outcomes to calculate the probability of getting two heads.
+Using the diagram above, we know that getting heads on the first coin flip means going "up" on the first branching point in the tree. Similarly, getting heads on the second flip means we go up on the second branching point as well. Visually, we can see that there are a total of 4 paths and only one satisfies our desired outcome of "two heads", so the probability of getting two heads is 0.25.
+We calculated this probability by going through the random experiment in stages, considering the result of the first coin flip before the second. By thinking of the experiment in terms of stages, we can break down the probability calculation in terms of stages as well. The first stage is just a coin flip, so we know the different probabilities for each outcome:
+ 
+Likewise, the second coin flip is also just a choice between heads or tails, so the full path we take in the two-coin flip experiment looks as follows:
+ 
+For both coin flips, the probability of getting heads is 0.5. Once we see the outcome of the first coin flip, we only need to worry about the outcome of the second flip. However, we don't just forget about the result of the first flip, we need to keep track of it in some way. Each branch in the path creates 2 new paths, so we get a total of 4 paths by multiplying the number of branches by how many new ones each creates. Using this same logic, we can calculate the probability in stages. Another way of thinking about the event "getting two heads" is getting heads on the first flip and on the second flip.
+
+P(getting 2 heads)=P(getting heads in first flip)×P(getting heads in second flip)=12×12=14P(getting 2 heads)=P(getting heads in first flip)×P(getting heads in second flip)=12×12=14
+The end result is significant for us: instead of calculating the probability for multiple events all at once, we can calculate it in stages. This is called the multiplication rule. The addition rule allows us to calculate probabilities for unions and intersections, while the multiplication rule allows us to calculate the probabilities of multiple random experiments together. Recall that looking at the probability of two events happening at the same time is also called an intersection. So in a more general formula, the multiplication rule looks like:
+P(A∩B)=P(A)×P(B)P(A∩B)=P(A)×P(B)
+Going back to the 100-coin flip, we now have an equation for calculating the probability of getting 100 heads. Instead of having just 2 branching points, we now have 100, but the calculation is similar. There are now 100 stages, and for each stage, the probability of getting heads is 0.5:
+P(100 heads)=12×...×12=(12)100P(100 heads)=12×...×12=(12)100
+The multiplication rule is incredibly important in calculating probabilities, but it also has an important assumption behind it. We'll cover this in the next screen, but take some time to practice using the multiplication rule.
+
+
+
+
+Instructions
+•	For rolling a fair six-sided die, find:
+1.	The probability of getting a 6 two times in a row. Assign your result to p_6_6.
+2.	The probability of getting a 3 on the first throw and a 2 on the second throw. Assign your result to p_3_2.
+3.	The probability of getting an even number on both throws. Assign your result to p_even_even.
+4.	The probability of getting a 1 on the first throw and an even number on the second throw. Assign your result to p_1_even
+
+
+
+```{r}
+p_6_6 <- (1/6) * (1/6)
+p_3_2 <- (1/6)**2
+p_even_even <- (3/6)**2
+p_1_even <- (1/6) * (3/6)
+```
+
+#Independent Event 
+
+When we toss a coin two times, we don't have much reason to believe that the result of the first flip will affect the second. In terms of probability, no matter what the result is for the first flip, the probability of the second coin resulting in heads will stay at 50%. Using more everyday events, we can take event AA to be "I will go to the gym today" and event BB to be "I will do homework today". Assuming that nothing extraordinary happens in my day, the act of me going to the gym realistically will not change the chances that I will do my homework and vice-versa.
+Conversely, there are also instances where two events might affect each other's chances. Let's consider the same event BB, doing my homework, and another event CC, watching a movie with friends. It usually takes me a long time to properly do my homework, so it is not unrealistic to think that I might miss the movie with my friends if I do my homework. Similarly, if I go watch the movies, I might not have enough time to do my homework afterwards. Since one event can affect the chances of another happening, we must call them dependent.
+This idea of events influencing or not influencing each other's chances of occurring is extremely important to the field of probability. So important that the idea has been given a name. When two events do not question the other's chance of happening, they are independent of each other. When the two events do affect each other, we call them dependent. This independence does not refer to the ability to be free of influence of others; it refers to a special relationship between events. That is to say, if events AA and BB are independent and AA happens, then we know that the probability of BB will not decrease or increase.
+The concept of independence is crucial to using the multiplication rule. The multiplication rule assumes that the events that you're looking at are independent. In the two- and 100- coin flip example, we can reasonably assume this since it is unlikely that any single flip will alter the coin in any way that will affect the probability of a heads in a future flip. If the two events are dependent on each other, we cannot use the multiplication rule.
+Before you move on to the next screen, take some time to practice handling independence.
+
+
+Instructions
+
+You work at a company that analyzes successful data scientist applicants. You've received some data on skills that were particularly useful to prospective hires. You wonder how likely it is for applicants to have particular combinations of skills, so you investigate the data:
+
+According to all the resumes that are in your system:
+
+The probability that an applicant lists SQL on their resume is 0.20.
+The probability that an applicant lists machine learning on their resume is 0.30.
+
+```{r}
+sql_and_ml <- 0.2 * 0.3
+ml_or_viz <- 0.3 + 0.4 - (0.3 * 0.4)
+at_least_one_skill <- 0.2 + 0.3 + 0.4 - (0.2 * 0.3) - (0.2 * 0.4) - (0.3 * 0.4) + (0.2 * 0.3 * 0.4)
+```
+
+
+# Independence vs Mutual Exclusivity
+
+If two events are mutually exclusive, then it is impossible for them to happen at the same time. A common misconception is that independence and mutual exclusivity are the same thing. We can see their differences more clearly if their formulas are shown together. Mathematically, we represent mutually exclusive events as follows:
+P(A∩B)=0P(A∩B)=0
+This is different than the definition for independence, given below:
+P(A∩B)=P(A)×P(B)
+
+One might think of mutual exclusivity as one event "affecting" another. If we observe event AA and it is mutually exclusive to BB, then we know that BB has no chance of happening. However you must take careful note that in mutually exclusive events, neither event is truly influencing the other: AA does not change the probability of BB. Mutual exclusivity is just a statement that two events cannot happen together, whereas independence between events is a statement of a certain connection between them.
+
+Instructions
+
+You work at a company that analyzes successful data scientist applicants. You've received some data on skills that were particularly useful to prospective hires. You wonder how likely it is for applicants to have particular combinations of skills, so you investigate the data:
+
+According to all the resumes that are in your system:
+
+The probability that an applicant lists SQL on their resume is 0.20.
+The probability that an applicant lists machine learning on their resume is 0.30.
+The probability that an applicant lists a personal website on their resume is 0.40
+This time, however, let's assume that each of these events are mutually exclusive, instead of independent. Please calculate:
+
+The probability that an applicant lists both SQL and machine learning on their resume. Assign this value to sql_and_ml_me.
+The probability that an applicant either has machine learning or visualizations on their resume. Assign this value to ml_or_viz_me.
+The probability that an applicant has at least one of the skills. Assign this value to at_least_one_skill_me.
+
+
+```{r}
+sql_and_ml_me <- 0
+ml_or_viz_me <- 0.30 + 0.40
+at_least_one_skill_me <- 0.20 + 0.30 + 0.40
+```
+
+#Compliments
+
+If there are outcomes that satisfy the conditions, there may be outcomes that don't satisfy the conditions.
+
+For example, if we take rolling a six-sided dice as our random experiment, we could define our event as "rolling an even number". This means that the numbers 2, 4, and 6 would satisfy this event. Consequently, the odd numbers —1, 3, and 5— don't satisfy the event. 
+
+
+As it turns out, thinking of all the events that don't satisfy an event condition is a useful idea in probability. We refer to this set of outcomes as the complement of an event. In the dictionary, a complement is a thing that brings another to perfection, so it makes sense that an event and its complement will recreate the sample space. Notation-wise, we typically use a capital, superscript "C" to denote the complement. If we define an event AA, then the complement of A would look like AC.
+Complements provide us with another useful tool to calculate probabilities. We'll explore a more involved example using complements in the next screen, but before then, solidify your grasp of complements.
+
+
+Instructions
+1.	Consider the roll of a six-sided dice. We'll define "rolling an even number" as our event.
+o	Calculate the probability of the complement of this event and assign it to p_complement_even
+2.	Consider drawing a card from a deck of playing cards. We'll define "drawing an ace" as our event.
+o	Calculate the probability of the complement of this event and assign it to p_complement_ace
+
+
+```{r}
+p_complement_even <- 3/6
+p_complement_ace <- 48/52
+```
+
+
+Consider the event "What is the probability of getting at least one 6 in four throws of a single six-sided die?" This type of event is different from what we've seen so far because it asks for getting at least one 6 instead of exactly one. Rather than ask ourselves about all the outcomes that satisfy this event, we may consider its complement instead. The opposite of getting at least one 6 is getting zero 6's at all in the four throws.
+Recall that the complement of an event is all the outcomes that don't satisfy the event. You may think of the complement of some event AA as not-AA. We also know that the union of an event and its complement is the entire sample space:
+
+A∪AC=ΩA∪AC=Ω
+
+An outcome must either satisfy the event condition or not, so it cannot do both. Therefore, an event and its complement are also mutually exclusive as well. If two events are mutually exclusive, then the probability of their union is just the sum of the individual probabilities.
+
+P(A∪AC)=P(Ω)⟹P(A)+P(AC)=P(Ω)P(A∪AC)=P(Ω)⟹P(A)+P(AC)=P(Ω)
+
+The probability of getting any event in the entire sample space is 1, since the sample space contains all of the outcomes. Rearranging the above equation, we can see an interesting relationship between the probability of an event and the probability of its complement:
+
+P(A)+P(AC)=1⟹P(A)=1−P(AC)P(A)+P(AC)=1⟹P(A)=1−P(AC)
+
+This equation lets us calculate the probability of "not rolling a 6" in a single dice roll. We know that the probability of rolling a 6 is 1616, so the probability of not rolling a 6 is 5656. Using the multiplication rule, we can calculate the probability of rolling zero 6's! Not getting a 6 is equivalent to rolling any of the other numbers, 5656. Since dice rolls are independent of each other, the probability of getting no 6's in 4 rolls is simply:
+P(AC)=(56)4=0.4823P(AC)=(56)4=0.4823
+Visually, we can think of getting zero 6's in 4 dice throws in the abbreviated diagram below:
+ 
+Using the equation from above, we can instantly get the probability of getting at least one 6 in 4 dice throws:
+P(A)=1−(56)4=0.5177P(A)=1−(56)4=0.5177
+As you can see, it is possible to turn harder problems into simpler problems by shifting your perspective on it. Using the complement of an event is one of these ways. 
+
+
+Instructions
+
+Consider the random experiment of throwing two six-sided dice simultaneously.
+
+Find the probability of getting at least one double-six (both die show 6) in 24 throws of two six-sided dice. Assign your answer to p_one_double_6. The table below shows all the outcomes of throwing two six-sided dice
+
+```{r}
+p_one_double_6 <- 1-(35/36)**24
+```
+
+
+#Detecting Dependence
+dependent events are events that affect each other's probabilities of occurring. While this sounds simple in theoretical terms, knowing that two events are dependent on each other can be significant in real-world contexts. Consider a company that hires two reviewers to examine the resumes of potential data scientists to hire. Working alone, one reviewer says that 10% of the resumes are great candidates. Alone, the second says that 17% of the resumes are good hires. However, when working together the two reviewers only agree that 8% of the candidates are good for the job.
+
+You may find it weird that the percentage of "good" candidates changes if the two reviewers are working alone or together. You really want to make  
+sure that you only look at qualified candidates, so you want to see if they influence each other. The question is: how can you prove this using the probability rules you've learned so far?
+
+Instructions
+•	We'll define the following events:
+o	AA: The first reviewer decides that a resume is a good hire
+o	BB: The second reviewer decides that a resume is a good hire
+•	Using the data from the scenario, figure out if these two events are independent.
+o	First, calculate the probability that both the first and second reviewer decide the resume is a good hire assuming they are independent. Assign this probability to p_intersection.
+o	Next, to see if the two events are independent, use the equality operator == to compare p_intersection against what we see in the data. If it is TRUE, then the reviewers are independent. If FALSE, then we've detected that the two reviewers are dependent on each other! Assign this comparison to is_independent
+
+```{r}
+p_intersection <- 17/100 * 10/100
+is_independent <- p_intersection == 8/100
+```
+
+
+
+
+
+
+
+
+
+
